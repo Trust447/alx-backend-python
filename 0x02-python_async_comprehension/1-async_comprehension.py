@@ -1,20 +1,17 @@
 #!/usr/bin/env python3
-""" Module to demonstrate Async Generator"""
+""" Module to demonstrate Async Comprehension"""
 import asyncio
-from typing import Generator
+from typing import List
+async_generator = __import__('0-async_generator').async_generator
 
 
-async def async_generator() -> Generator[float, None, None]:
+async def async_comprehension() -> List[float]:
     """ Coroutine to generate random float numbers """
-    import random
-    for _ in range(10):
-        await asyncio.sleep(1)
-        yield random.uniform(0, 10)
+    return [x async for x in async_generator()]
 
 
 if __name__ == "__main__":
-    async def print_yielded_values():
-        result = [i async for i in async_generator()]
-        print(result)
+    async def main():
+        print(await async_comprehension())
 
-    asyncio.run(print_yielded_values())
+    asyncio.run(main())
