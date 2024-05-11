@@ -1,20 +1,18 @@
 #!/usr/bin/env python3
-"""Concurrent coroutines in Python"""
+""" Module to demonstrate Async Comprehension"""
+import asyncio
+from typing import List
+async_comprehension = __import__('1-async_comprehension').async_comprehension
 
 
-def measure_time(n: int, max_delay: int) -> float:
-    """Measures the total execution time for wait_n"""
-    wait_n = __import__('1-concurrent_coroutines').wait_n
-    import time
-    import asyncio
-    start = time.time()
-    (asyncio.run(wait_n(n, max_delay)))
-    return time.time() - start
+async def measure_runtime() -> float:
+    """ Coroutine to measure runtime """
+    start = asyncio.get_event_loop().time()
+    batch = [async_comprehension() for _ in range(4)]
+    await asyncio.gather(*batch)
+    end = asyncio.get_event_loop().time()
+    return end - start
 
 
 if __name__ == "__main__":
-    print(measure_time(5, 2))
-    print(measure_time(4, 3))
-    print(measure_time(3, 1))
-    print(measure_time(2, 5))
-    print(measure_time(1, 4))
+    print(asyncio.run(measure_runtime()))
