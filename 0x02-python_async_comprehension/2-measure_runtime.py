@@ -2,17 +2,18 @@
 """ Module to demonstrate Async Comprehension"""
 import asyncio
 from typing import List
-async_generator = __import__('0-async_generator').async_generator
+async_comprehension = __import__('1-async_comprehension').async_comprehension
 
 
-async def async_comprehension() -> List[float]:
-     """ Coroutine to generate random float numbers """
-    return [x async for x in async_generator()]
+async def measure_runtime() -> float:
+     """ Coroutine to measure runtime """
+    start = asyncio.get_event_loop().time()
+    batch = [async_comprehension() for _ in range(4)]
+    await asyncio.gather(*batch)
+    end = asyncio.get_event_loop().time()
+    return end - start
+
 
 
 if __name__ == "__main__":
-    async def main():
-        print(await async_comprehension())
-
-
-    asyncio.run(main())
+    print(asyncio.run(measure_runtime()))
